@@ -37,9 +37,9 @@ const QUESTIONS = [
 ];
 
 const ANSWERS = [
-  { key: 2, label: "Concordo" },
-  { key: 1, label: "Neutro"   },
-  { key: 0, label: "Discordo" },
+  { key: 2, label: "Sim" },
+  { key: 1, label: "Não sei dizer"   },
+  { key: 0, label: "Não" },
 ];
 
 function classNames(...xs){ return xs.filter(Boolean).join(" "); }
