@@ -18,7 +18,7 @@ const QUESTIONS = [
   { id: 1,  text: "Gosto de socializar e converso bastante.",               profile: "sanguineo" },
   { id: 2,  text: "Animo o grupo e gosto de contar histórias.",             profile: "sanguineo" },
   { id: 3,  text: "Sou espontâneo(a) e me adapto rápido.",                  profile: "sanguineo" },
-  { id: 4,  text: "Prefiro ambientes animados e cheios de gente.",         profile: "sanguineo" },
+  { id: 4,  text: "Prefiro ambientes animados e cheios de gente.",          profile: "sanguineo" },
 
   { id: 5,  text: "Gosto de liderar e decidir com rapidez.",                profile: "colerico" },
   { id: 6,  text: "Sou competitivo(a) e focado(a) em resultados.",          profile: "colerico" },
@@ -38,7 +38,7 @@ const QUESTIONS = [
 
 const ANSWERS = [
   { key: 2, label: "Sim" },
-  { key: 1, label: "Não sei dizer"   },
+  { key: 1, label: "Não sei dizer" },
   { key: 0, label: "Não" },
 ];
 
@@ -55,15 +55,29 @@ function computeScores(state){
   return { scores, topKey: top[0], perc };
 }
 
+/** ⇩⇩⇩  TROCA AQUI  ⇩⇩⇩ */
 async function postJSON(url, body){
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body)
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      // sem headers propositalmente para evitar preflight CORS no Apps Script
+      body: JSON.stringify(body),
+    });
+
+    const text = await res.text(); // captura texto bruto para logs úteis
+    if (!res.ok) {
+      console.error("Apps Script respondeu com erro:", res.status, text);
+      throw new Error(`HTTP ${res.status} – ${text || "sem corpo"}`);
+    }
+
+    try { return JSON.parse(text); } catch { return { ok: true, text }; }
+  } catch (err) {
+    console.error("POST falhou:", err);
+    throw err;
+  }
 }
+/** ⇧⇧⇧  TROCA AQUI  ⇧⇧⇧ */
+
 async function getJSON(url){
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
