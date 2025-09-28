@@ -136,12 +136,12 @@ export default function TemperamentQuizApp(){
             <div style={{display:"grid", gap:8, marginBottom:12}}>
               <input
                 value={name} onChange={e=>setName(e.target.value)}
-                placeholder="Seu nome (opcional)"
+                placeholder="Seu nome"
                 style={{padding:"10px 12px", border:"1px solid #374151", borderRadius:10, background:"#111", color:"#fff"}}
               />
               <input
                 value={classId} onChange={e=>setClassId(e.target.value)}
-                placeholder="Turma (ex.: 3A) — opcional"
+                placeholder="Turma (ex.: 2 PEL/2 CIA)"
                 style={{padding:"10px 12px", border:"1px solid #374151", borderRadius:10, background:"#111", color:"#fff"}}
               />
             </div>
