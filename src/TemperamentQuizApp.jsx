@@ -55,18 +55,15 @@ function computeScores(state){
   return { scores, topKey: top[0], perc };
 }
 
-/** >>> ALTERAÇÃO AQUI: usar text/plain para evitar preflight/CORS no Apps Script */
 async function postJSON(url, body){
   const res = await fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body)
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  // Apps Script às vezes retorna só "ok" (não-JSON); proteger o parse:
-  try { return await res.json(); } catch { return { ok:true }; }
+  return res.json();
 }
-
 async function getJSON(url){
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -128,8 +125,8 @@ export default function TemperamentQuizApp(){
     <div style={{minHeight:"100vh", background:"#0a0a0a", color:"#f5f5f5"}}>
       <header style={{borderBottom:"1px solid #1f2937", position:"sticky", top:0, background:"#0a0a0a"}}>
         <div style={{maxWidth:960, margin:"0 auto", padding:"14px 16px", display:"flex", justifyContent:"space-between", alignItems:"center"}}>
-          <h1 style={{fontSize:22, fontWeight:600}}>Questionário de Temperamentos</h1>
-          <small style={{opacity:0.7}}>{CONFIG.API_URL ? "conectado à planilha" : "modo local"}</small>
+          <h1 style={{fontSize:22, fontWeight:600}}>Trabalho de Chefia e Liderança - Questionário</h1>
+          <small style={{opacity:0.7}}>{CONFIG.API_URL ? "" : "modo local"}</small>
         </div>
       </header>
 
