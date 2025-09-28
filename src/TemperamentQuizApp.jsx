@@ -55,15 +55,18 @@ function computeScores(state){
   return { scores, topKey: top[0], perc };
 }
 
+/** >>> ALTERAÇÃO AQUI: usar text/plain para evitar preflight/CORS no Apps Script */
 async function postJSON(url, body){
   const res = await fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify(body)
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
+  // Apps Script às vezes retorna só "ok" (não-JSON); proteger o parse:
+  try { return await res.json(); } catch { return { ok:true }; }
 }
+
 async function getJSON(url){
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
